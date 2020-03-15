@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#344E5C</color>
+    <color name="colorPrimaryDark">#344E5C</color>
+    <color name="colorAccent">#EF3D75</color>
+
+    <color name="colorWindowBackground">?android:attr/windowBackground</color>
+
+    <color name="colorIcons">#000</color>
+
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorTextSecondary">#696969</color> <!-- nice -->
+</resources>
