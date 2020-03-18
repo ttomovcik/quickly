@@ -1,31 +1,25 @@
 <resources>
-    <string name="app_name">Quickly</string>
+    <string name="app_name" translatable="false">Quickly</string>
     <string name="app_description">A note taking app for Android with clean UI</string>
     <string name="app_version">You are using Quickly v0.1.0</string>
-    <string name="app_homepage">https://github.com/ttomovcik/quickly</string>
-    <string name="app_wiki">https://github.com/ttomovcik/quickly/wiki</string>
+    <string name="app_wiki" translatable="false">https://github.com/ttomovcik/quickly/wiki</string>
 
     <string name="title_archivedItems">Archived</string>
     <string name="title_about_app">About</string>
     <string name="title_settings">Settings</string>
     <string name="title_help_support">Help &amp; support</string>
     <string name="title_favorites">Favorites</string>
-    <string name="title_activity_login">Sign in</string>
     <string name="title_add_note">Add new note</string>
     <string name="title_my_notes">My notes</string>
-    <string name="title_delete_note">Delete note</string>
 
     <string name="hint_note_title">Title</string>
     <string name="hint_note_text">Text</string>
 
     <string name="btn_save">Save</string>
-    <string name="btn_add_to_favorites">Add to favorites</string>
     <string name="btn_delete">Delete</string>
-    <string name="btn_cancel">Cancel</string>
 
     <string name="note_archived">Moved to archived notes</string>
     <string name="restored">Note has been restored</string>
     <string name="added_to_favorites">Added to favorites</string>
     <string name="removed_from_favorites">Removed from favorrites</string>
-    <string name="confirm_delete_note">Bad things are about to happen if you click yes.\nDo you really want to delete this note? This action is irreversible.</string>
 </resources>

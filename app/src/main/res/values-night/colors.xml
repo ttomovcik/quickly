@@ -4,8 +4,6 @@
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#EF3D75</color>
 
-    <color name="colorWindowBackground">?android:attr/windowBackground</color>
-
     <color name="colorIcons">#FFF</color>
 
     <color name="colorTextPrimary">#FFF</color>
