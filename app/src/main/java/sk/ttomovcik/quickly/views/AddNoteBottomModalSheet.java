@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,12 +21,19 @@ import sk.ttomovcik.quickly.MainActivity;
 import sk.ttomovcik.quickly.R;
 import sk.ttomovcik.quickly.db.NotesDb;
 
+import static sk.ttomovcik.quickly.R.id.btn_bottomsheet_delete;
+import static sk.ttomovcik.quickly.R.id.eFab_bottomsheet_done;
+import static sk.ttomovcik.quickly.R.id.textBox_bottomsheet_noteTextTextBox;
+import static sk.ttomovcik.quickly.R.id.textBox_bottomsheet_noteTitleTextBox;
+
 public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
 
-    private TextInputEditText inputTitle, inputText;
-    private String title, text;
     private NotesDb notesDb;
-    private int id;
+    private boolean isInEditMode = false;
+    private ExtendedFloatingActionButton btn_save;
+    private AppCompatButton btn_delete;
+    private String bundleId, bundleTitle, bundleText;
+    private TextInputEditText inputTitle, inputText;
 
     public static AddNoteBottomModalSheet newInstance() {
         return new AddNoteBottomModalSheet();
@@ -37,47 +45,42 @@ public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.bottomsheet_addnote, container, false);
 
         Bundle bundle = this.getArguments();
+        isInEditMode = bundle != null && bundle.getBoolean("setEditMode");
         notesDb = new NotesDb(getContext());
 
-        inputTitle = view.findViewById(R.id.textBox_bottomsheet_noteTitleTextBox);
-        inputText = view.findViewById(R.id.textBox_bottomsheet_noteTextTextBox);
-        AppCompatButton btn_delete = view.findViewById(R.id.btn_bottomsheet_delete);
+        // Assign variables
+        btn_delete = view.findViewById(btn_bottomsheet_delete);
+        btn_save = view.findViewById(eFab_bottomsheet_done);
+        inputTitle = view.findViewById(textBox_bottomsheet_noteTitleTextBox);
+        inputText = view.findViewById(textBox_bottomsheet_noteTextTextBox);
 
-        if (bundle != null && bundle.getBoolean("setEditMode")) {
-            inputTitle.setText(bundle.getString("title"));
-            inputText.setText(bundle.getString("text"));
+
+        // Create onClickListeners for buttons
+        if (isInEditMode) {
+            assert bundle != null;
+            bundleId = bundle.getString("id");
+            bundleTitle = bundle.getString("title");
+            bundleText = bundle.getString("text");
+            populateData();
             btn_delete.setVisibility(View.VISIBLE);
             btn_delete.setOnClickListener(v -> {
-                notesDb.deleteNote(bundle.getString("id"));
+                notesDb.deleteNote(bundleId);
                 ((MainActivity) Objects.requireNonNull(getActivity())).loadRecyclerView("allExceptArchived");
                 dismiss();
             });
-            view.findViewById(R.id.eFab_bottomsheet_done).setOnClickListener(v -> {
-                title = Objects.requireNonNull(inputTitle.getText()).toString();
-                text = Objects.requireNonNull(inputText.getText()).toString();
-                if (isEmpty(title) || isEmpty(text)) {
-                    notesDb.updateItem(bundle.getString("id"), "title", title);
-                    notesDb.updateItem(bundle.getString("id"), "text", text);
-                } else {
-                    dismiss();
-                }
-                dismiss();
+            btn_save.setOnClickListener(v -> {
+                notesDb.updateItem(bundleId, "title", getInput()[0]);
+                notesDb.updateItem(bundleId, "text", getInput()[1]);
                 ((MainActivity) Objects.requireNonNull(getActivity())).loadRecyclerView("allExceptArchived");
+                dismiss();
             });
         } else {
-            view.findViewById(R.id.eFab_bottomsheet_done).setOnClickListener(v -> {
-                title = Objects.requireNonNull(inputTitle.getText()).toString();
-                text = Objects.requireNonNull(inputText.getText()).toString();
-                if (isEmpty(title) || isEmpty(text)) {
-                    notesDb.addNote(title, text, "normal");
-                } else {
-                    dismiss();
-                }
-                dismiss();
+            btn_save.setOnClickListener(v -> {
+                notesDb.addNote(getInput()[0], getInput()[1], "normal");
                 ((MainActivity) Objects.requireNonNull(getActivity())).loadRecyclerView("allExceptArchived");
+                dismiss();
             });
         }
-
         return view;
     }
 
@@ -88,5 +91,17 @@ public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
 
     private boolean isEmpty(String string) {
         return string == null || string.length() == 0;
+    }
+
+    private String[] getInput() {
+        return new String[]{
+                Objects.requireNonNull(inputTitle.getText()).toString(),
+                Objects.requireNonNull(inputText.getText()).toString()
+        };
+    }
+
+    private void populateData() {
+        inputTitle.setText(bundleTitle);
+        inputText.setText(bundleText);
     }
 }
