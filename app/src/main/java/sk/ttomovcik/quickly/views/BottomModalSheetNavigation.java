@@ -1,5 +1,6 @@
 package sk.ttomovcik.quickly.views;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import java.util.Objects;
 import saschpe.android.customtabs.CustomTabsHelper;
 import saschpe.android.customtabs.WebViewFallback;
 import sk.ttomovcik.quickly.R;
+import sk.ttomovcik.quickly.Login;
 
 public class BottomModalSheetNavigation extends BottomSheetDialogFragment
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,7 +38,10 @@ public class BottomModalSheetNavigation extends BottomSheetDialogFragment
 
         NavigationView navigationView = view.findViewById(R.id.menu_bottomsheet_main);
         navigationView.setNavigationItemSelectedListener(this);
-        view.findViewById(R.id.rl_bottomsheet_profileInfo).setOnClickListener(v -> dismiss());
+        view.findViewById(R.id.rl_bottomsheet_profileInfo).setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), Login.class));
+            dismiss();
+        });
         return view;
 
     }

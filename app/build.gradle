@@ -22,6 +22,9 @@ android {
             outputFileName = "quickly_${variant.name}_${variant.versionName}.apk"
         }
     }
+    viewBinding {
+        enabled = true
+    }
     buildTypes {
         debug {
             minifyEnabled false
@@ -53,6 +56,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0-rc01'
+    implementation 'androidx.annotation:annotation:1.1.0'
 
 
     implementation 'com.google.android.material:material:1.2.0-alpha02'
@@ -62,7 +66,9 @@ dependencies {
     implementation 'saschpe.android:customtabs:2.0.0'
     implementation "com.mikepenz:aboutlibraries:7.1.0"
     implementation "com.mikepenz:aboutlibraries-core:7.1.0"
+    implementation 'com.jakewharton:butterknife:10.2.1'
 
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 
     testImplementation 'junit:junit:4.12'
 
