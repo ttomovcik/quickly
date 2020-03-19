@@ -39,9 +39,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:background="?android:attr/windowBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@color/colorFabInNoteItem"
             android:src="@drawable/ic_favorite_border_24dp"
-            app:backgroundTint="?android:attr/windowBackground"
+            app:backgroundTint="@color/colorFabInNoteItem"
             app:fabSize="mini"
             app:tint="@color/colorIcons" />
     </RelativeLayout>
