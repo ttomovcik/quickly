@@ -1,11 +1,13 @@
 package sk.ttomovcik.quickly;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         prepareRecyclerView();
     }
 
+    // Close all connections on application exit or switching apps
     @Override
     protected void onPause() {
         super.onPause();
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    // Prepare 'Favorite' and 'Archived' menu items for filtering notes
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -110,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Opens specified bottomModalSheetFragment
+     *
+     * @param target Target bottomModalSheet name
+     */
     private void openBottomModalSheet(String target) {
         switch (target) {
             case "navigation":
@@ -134,6 +143,13 @@ public class MainActivity extends AppCompatActivity {
         loadRecyclerView("allExceptArchived");
     }
 
+    /**
+     * @param notesCategory Filter between note categories
+     *                      "all",
+     *                      "allExceptArchived",
+     *                      "favorites",
+     *                      "archived"
+     */
     public void loadRecyclerView(String notesCategory) {
         Cursor dataFromDb = notesDb.getNotes(notesCategory);
         noteList.clear();
@@ -152,6 +168,13 @@ public class MainActivity extends AppCompatActivity {
         notesAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Opens up AddNoteBottomModalSheet in editMode by setting 'setEditMode' to true
+     *
+     * @param id    ID of target note
+     * @param title Title to be set by populatePlaceholders()
+     * @param text  Text to be set by populatePlaceholders()
+     */
     public void openNoteInEditMode(String id, String title, String text) {
         Bundle bundle = new Bundle();
         bundle.putBoolean("setEditMode", true);

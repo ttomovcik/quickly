@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -87,6 +88,9 @@ public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
     @Override
     public void onCancel(@NotNull DialogInterface dialog) {
         super.onCancel(dialog);
+        // Basically a cheat-y way to hide keyboard
+        Objects.requireNonNull(getActivity()).getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     private boolean isEmpty(String string) {

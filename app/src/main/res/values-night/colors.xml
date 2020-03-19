@@ -5,6 +5,7 @@
     <color name="colorAccent">#EF3D75</color>
 
     <color name="colorIcons">#FFF</color>
+    <color name="colorFabInNoteItem">#212121</color>
 
     <color name="colorTextPrimary">#FFF</color>
     <color name="colorTextSecondary">#696969</color> <!-- nice -->
