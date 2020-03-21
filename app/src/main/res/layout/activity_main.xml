@@ -13,7 +13,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <TextView
                 android:id="@+id/tv_appTitle"
                 android:layout_width="match_parent"
@@ -28,11 +27,32 @@
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="30sp" />
 
+            <RelativeLayout
+                android:id="@+id/rl_filterActiveNotification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_appTitle"
+                android:layout_centerVertical="true"
+                android:background="@color/colorFilterNotification"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_16"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_filterHint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorTextSecondary" />
+            </RelativeLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_notes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_appTitle"
+                android:layout_below="@id/rl_filterActiveNotification"
                 android:layout_marginBottom="?attr/actionBarSize"
                 android:scrollbars="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />

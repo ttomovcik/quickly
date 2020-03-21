@@ -1,13 +1,12 @@
 package sk.ttomovcik.quickly;
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,10 +43,14 @@ public class MainActivity extends AppCompatActivity {
     BottomAppBar bottomAppBar;
     @BindView(R.id.rv_notes)
     RecyclerView recyclerView;
+    @BindView(R.id.rl_filterActiveNotification)
+    RelativeLayout rl_filterNotification;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.tv_appTitle)
     TextView tv_appTitle;
+    @BindView(R.id.tv_filterHint)
+    TextView filterHint;
 
     @OnClick(R.id.fab)
     void createNote() {
@@ -92,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
                 if (!isFilterActive) {
                     loadRecyclerView("archived");
                     isFilterActive = true;
+                    rl_filterNotification.setVisibility(View.VISIBLE);
+                    rl_filterNotification.setOnClickListener(v -> {
+                        loadRecyclerView("allExceptArchived");
+                        isFilterActive = false;
+                        tv_appTitle.setText(getString(R.string.title_my_notes));
+                        rl_filterNotification.setVisibility(View.GONE);
+                    });
+                    filterHint.setText(R.string.filter_active_archived);
                     tv_appTitle.setText(getString(R.string.title_archivedItems));
                 } else {
                     loadRecyclerView("allExceptArchived");
@@ -103,6 +114,14 @@ public class MainActivity extends AppCompatActivity {
                 if (!isFilterActive) {
                     loadRecyclerView("favorites");
                     isFilterActive = true;
+                    rl_filterNotification.setVisibility(View.VISIBLE);
+                    rl_filterNotification.setOnClickListener(v -> {
+                        loadRecyclerView("allExceptArchived");
+                        isFilterActive = false;
+                        tv_appTitle.setText(getString(R.string.title_my_notes));
+                        rl_filterNotification.setVisibility(View.GONE);
+                    });
+                    filterHint.setText(R.string.filter_active_favorites);
                     tv_appTitle.setText(getString(R.string.title_favorites));
                 } else {
                     loadRecyclerView("allExceptArchived");
