@@ -22,4 +22,7 @@
     <string name="restored">Note has been restored</string>
     <string name="added_to_favorites">Added to favorites</string>
     <string name="removed_from_favorites">Removed from favorrites</string>
+    <string name="edit_note">Edit note</string>
+    <string name="filter_active_favorites">Showing only favorites. Tap here to show all notes.</string>
+    <string name="filter_active_archived">Showing archived notes. Tap here to show all notes.</string>
 </resources>

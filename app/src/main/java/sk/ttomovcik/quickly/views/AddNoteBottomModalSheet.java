@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -35,6 +36,7 @@ public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
     private AppCompatButton btn_delete;
     private String bundleId, bundleTitle, bundleText;
     private TextInputEditText inputTitle, inputText;
+    private TextView dialogTitle;
 
     public static AddNoteBottomModalSheet newInstance() {
         return new AddNoteBottomModalSheet();
@@ -50,6 +52,7 @@ public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
         notesDb = new NotesDb(getContext());
 
         // Assign variables
+        dialogTitle = view.findViewById(R.id.tv_bottomsheet_titleAddNote);
         btn_delete = view.findViewById(btn_bottomsheet_delete);
         btn_save = view.findViewById(eFab_bottomsheet_done);
         inputTitle = view.findViewById(textBox_bottomsheet_noteTitleTextBox);
@@ -58,17 +61,27 @@ public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
 
         // Create onClickListeners for buttons
         if (isInEditMode) {
+            // Get data from bundle
             assert bundle != null;
             bundleId = bundle.getString("id");
             bundleTitle = bundle.getString("title");
             bundleText = bundle.getString("text");
+
+            // Change title to 'edit note'
+            dialogTitle.setText(R.string.edit_note);
+
+            // Set text from db
             populateData();
+
+            // Enable delete button for existing task
             btn_delete.setVisibility(View.VISIBLE);
             btn_delete.setOnClickListener(v -> {
                 notesDb.deleteNote(bundleId);
                 ((MainActivity) Objects.requireNonNull(getActivity())).loadRecyclerView("allExceptArchived");
                 dismiss();
             });
+
+            // Change save button to update instead of saving new note
             btn_save.setOnClickListener(v -> {
                 notesDb.updateItem(bundleId, "title", getInput()[0]);
                 notesDb.updateItem(bundleId, "text", getInput()[1]);
@@ -97,6 +110,11 @@ public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
         return string == null || string.length() == 0;
     }
 
+    /**
+     * Returns title and text from editTextBoxes
+     *
+     * @return String[] {title, text}
+     */
     private String[] getInput() {
         return new String[]{
                 Objects.requireNonNull(inputTitle.getText()).toString(),
