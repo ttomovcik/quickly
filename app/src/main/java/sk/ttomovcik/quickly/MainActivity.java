@@ -10,8 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sk.ttomovcik.quickly.adapters.NotesAdapter;
 import sk.ttomovcik.quickly.db.NotesDb;
-import sk.ttomovcik.quickly.helpers.SwipeToArchiveCallback;
 import sk.ttomovcik.quickly.model.Note;
 import sk.ttomovcik.quickly.views.AddNoteBottomModalSheet;
 import sk.ttomovcik.quickly.views.BottomModalSheetNavigation;
@@ -51,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
     TextView tv_appTitle;
     @BindView(R.id.tv_filterHint)
     TextView filterHint;
+    @BindView(R.id.loader)
+    ContentLoadingProgressBar loader;
+    @BindView(R.id.inc_gs_home)
+    RelativeLayout gs_home;
 
     @OnClick(R.id.fab)
     void createNote() {
@@ -65,13 +68,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(bottomAppBar);
         notesDb = new NotesDb(this);
         bottomAppBar.setNavigationOnClickListener(v -> openBottomModalSheet("navigation"));
-        prepareRecyclerView();
+        prepareRecyclerView("allExceptArchived");
     }
 
-    // Close all connections on application exit or switching apps
     @Override
     protected void onPause() {
         super.onPause();
+        // Close all connections on application exit or switching apps
         notesDb.close();
     }
 
@@ -93,40 +96,41 @@ public class MainActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.menu_archivedItems:
                 if (!isFilterActive) {
-                    loadRecyclerView("archived");
                     isFilterActive = true;
-                    rl_filterNotification.setVisibility(View.VISIBLE);
+
+                    // Prepare recyclerView and show filter notification
+                    prepareRecyclerView("archived");
+                    showFilterNotification(true);
                     rl_filterNotification.setOnClickListener(v -> {
-                        loadRecyclerView("allExceptArchived");
+
+                        // Restore to defaults
                         isFilterActive = false;
                         tv_appTitle.setText(getString(R.string.title_my_notes));
-                        rl_filterNotification.setVisibility(View.GONE);
+                        showFilterNotification(false);
+                        prepareRecyclerView("allExceptArchived");
                     });
                     filterHint.setText(R.string.filter_active_archived);
                     tv_appTitle.setText(getString(R.string.title_archivedItems));
-                } else {
-                    loadRecyclerView("allExceptArchived");
-                    isFilterActive = false;
-                    tv_appTitle.setText(getString(R.string.title_my_notes));
                 }
+
                 return true;
             case R.id.menu_favorites:
                 if (!isFilterActive) {
-                    loadRecyclerView("favorites");
                     isFilterActive = true;
-                    rl_filterNotification.setVisibility(View.VISIBLE);
+
+                    // Prepare recyclerView and show filter notification
+                    prepareRecyclerView("favorites");
+                    showFilterNotification(true);
                     rl_filterNotification.setOnClickListener(v -> {
-                        loadRecyclerView("allExceptArchived");
+
+                        // Restore to defaults
                         isFilterActive = false;
                         tv_appTitle.setText(getString(R.string.title_my_notes));
-                        rl_filterNotification.setVisibility(View.GONE);
+                        showFilterNotification(false);
+                        prepareRecyclerView("allExceptArchived");
                     });
                     filterHint.setText(R.string.filter_active_favorites);
                     tv_appTitle.setText(getString(R.string.title_favorites));
-                } else {
-                    loadRecyclerView("allExceptArchived");
-                    isFilterActive = false;
-                    tv_appTitle.setText(getString(R.string.title_my_notes));
                 }
                 return true;
         }
@@ -151,25 +155,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void prepareRecyclerView() {
-        tv_appTitle.setText(getString(R.string.title_my_notes));
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(notesAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToArchiveCallback(notesAdapter, this));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-        loadRecyclerView("allExceptArchived");
-    }
-
     /**
-     * @param notesCategory Filter between note categories
-     *                      "all",
-     *                      "allExceptArchived",
-     *                      "favorites",
-     *                      "archived"
+     * Prepares RecyclerView and loads data
+     *
+     * @param notesCategory Target filter category
      */
-    public void loadRecyclerView(String notesCategory) {
+    public void prepareRecyclerView(String notesCategory) {
         Cursor dataFromDb = notesDb.getNotes(notesCategory);
         noteList.clear();
         if (dataFromDb != null) {
@@ -184,7 +175,19 @@ public class MainActivity extends AppCompatActivity {
                 dataFromDb.moveToNext();
             }
         }
-        notesAdapter.notifyDataSetChanged();
+        if (noteList.size() == 0) {
+            loader.setVisibility(View.GONE);
+            gs_home.setVisibility(View.VISIBLE);
+        } else {
+            loader.setVisibility(View.GONE);
+            gs_home.setVisibility(View.GONE);
+            tv_appTitle.setText(getString(R.string.title_my_notes));
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(notesAdapter);
+            notesAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -203,5 +206,9 @@ public class MainActivity extends AppCompatActivity {
         AddNoteBottomModalSheet addNote = AddNoteBottomModalSheet.newInstance();
         addNote.setArguments(bundle);
         addNote.show(getSupportFragmentManager(), "BottomSheetnavigation");
+    }
+
+    public void showFilterNotification(Boolean state) {
+        rl_filterNotification.setVisibility(state ? View.VISIBLE : View.GONE);
     }
 }

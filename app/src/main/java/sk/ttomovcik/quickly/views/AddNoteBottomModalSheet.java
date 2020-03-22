@@ -9,10 +9,10 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,13 +27,14 @@ import static sk.ttomovcik.quickly.R.id.btn_bottomsheet_delete;
 import static sk.ttomovcik.quickly.R.id.eFab_bottomsheet_done;
 import static sk.ttomovcik.quickly.R.id.textBox_bottomsheet_noteTextTextBox;
 import static sk.ttomovcik.quickly.R.id.textBox_bottomsheet_noteTitleTextBox;
+import static sk.ttomovcik.quickly.R.id.tv_bottomsheet_titleAddNote;
 
 public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
 
     private NotesDb notesDb;
     private boolean isInEditMode = false;
     private ExtendedFloatingActionButton btn_save;
-    private AppCompatButton btn_delete;
+    private FloatingActionButton btn_delete, btn_archive;
     private String bundleId, bundleTitle, bundleText;
     private TextInputEditText inputTitle, inputText;
     private TextView dialogTitle;
@@ -52,8 +53,9 @@ public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
         notesDb = new NotesDb(getContext());
 
         // Assign variables
-        dialogTitle = view.findViewById(R.id.tv_bottomsheet_titleAddNote);
+        dialogTitle = view.findViewById(tv_bottomsheet_titleAddNote);
         btn_delete = view.findViewById(btn_bottomsheet_delete);
+        btn_archive = view.findViewById(R.id.btn_bottomsheet_archive);
         btn_save = view.findViewById(eFab_bottomsheet_done);
         inputTitle = view.findViewById(textBox_bottomsheet_noteTitleTextBox);
         inputText = view.findViewById(textBox_bottomsheet_noteTextTextBox);
@@ -73,26 +75,28 @@ public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
             // Set text from db
             populateData();
 
-            // Enable delete button for existing task
             btn_delete.setVisibility(View.VISIBLE);
             btn_delete.setOnClickListener(v -> {
                 notesDb.deleteNote(bundleId);
-                ((MainActivity) Objects.requireNonNull(getActivity())).loadRecyclerView("allExceptArchived");
-                dismiss();
+                reloadAndExit();
+            });
+
+            btn_archive.setVisibility(View.VISIBLE);
+            btn_archive.setOnClickListener(v -> {
+                notesDb.updateItem(bundleId, "state", "archived");
+                reloadAndExit();
             });
 
             // Change save button to update instead of saving new note
             btn_save.setOnClickListener(v -> {
                 notesDb.updateItem(bundleId, "title", getInput()[0]);
                 notesDb.updateItem(bundleId, "text", getInput()[1]);
-                ((MainActivity) Objects.requireNonNull(getActivity())).loadRecyclerView("allExceptArchived");
-                dismiss();
+                reloadAndExit();
             });
         } else {
             btn_save.setOnClickListener(v -> {
                 notesDb.addNote(getInput()[0], getInput()[1], "normal");
-                ((MainActivity) Objects.requireNonNull(getActivity())).loadRecyclerView("allExceptArchived");
-                dismiss();
+                reloadAndExit();
             });
         }
         return view;
@@ -125,5 +129,10 @@ public class AddNoteBottomModalSheet extends BottomSheetDialogFragment {
     private void populateData() {
         inputTitle.setText(bundleTitle);
         inputText.setText(bundleText);
+    }
+
+    private void reloadAndExit() {
+        ((MainActivity) Objects.requireNonNull(getActivity())).prepareRecyclerView("allExceptArchived");
+        dismiss();
     }
 }

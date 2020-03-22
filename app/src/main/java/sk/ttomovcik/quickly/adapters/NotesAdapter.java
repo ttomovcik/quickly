@@ -10,7 +10,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -51,8 +50,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     @NotNull
     @Override
     public NotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        itemView = LayoutInflater
-                .from(parent.getContext()).inflate(R.layout.layout_notescard, parent, false);
+        itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_notescard, parent, false);
         notesDb = new NotesDb(parent.getContext());
         return new NotesViewHolder(itemView);
     }
@@ -60,10 +58,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     @Override
     public void onBindViewHolder(NotesViewHolder holder, int position) {
         Note note = noteList.get(position);
+
+        // Set onClickListener for existing note -> open modal sheet in editing mode
         holder.cv_notesItem_cardView.setOnClickListener(view -> ((MainActivity) context)
-                .openNoteInEditMode(String.valueOf(note.get_Id()),
-                        note.getTitle(), note.getText()));
+                .openNoteInEditMode(String.valueOf(note.get_Id()), note.getTitle(), note.getText()));
+
         holder.title.setText(note.getTitle());
+        holder.text.setText(note.getText());
+
+        // Change FAB icon according to note state
         if (note.getState().equals("favorite")) {
             holder.fab_favorite.setImageResource(R.drawable.ic_favorite_24dp);
         } else {
@@ -72,36 +75,39 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         if (note.getState().equals("archived")) {
             holder.fab_favorite.setImageResource(R.drawable.ic_restore_24dp);
         }
-        holder.text.setText(note.getText());
+
+        // Set onClickListener for FAB
         holder.fab_favorite.setOnClickListener(v -> {
             if (note.getState().contains("normal")) {
                 notesDb.updateItem(String.valueOf(note.get_Id()), "state", "favorite");
-                if (context instanceof MainActivity) {
-                    Snackbar.make(v, context.getString(R.string.added_to_favorites), Snackbar.LENGTH_SHORT).show();
-                    ((MainActivity) context).prepareRecyclerView();
-                }
+                reloadRecyclerView(false);
             }
             if (note.getState().contains("favorite")) {
                 notesDb.updateItem(String.valueOf(note.get_Id()), "state", "normal");
-                if (context instanceof MainActivity) {
-                    Snackbar.make(v, context.getString(R.string.removed_from_favorites), Snackbar.LENGTH_SHORT).show();
-                    ((MainActivity) context).prepareRecyclerView();
-                }
+                reloadRecyclerView(true);
             }
             if (note.getState().contains("archived")) {
                 notesDb.updateItem(String.valueOf(note.get_Id()), "state", "normal");
-                if (context instanceof MainActivity) {
-                    Snackbar.make(v, context.getString(R.string.restored), Snackbar.LENGTH_SHORT).show();
-                    ((MainActivity) context).prepareRecyclerView();
-                }
+                reloadRecyclerView(true);
             }
         });
     }
 
     public void archiveNote(int position) {
         notesDb.updateItem(String.valueOf(Math.floor(position + 1)), "state", "archived");
-        Snackbar.make(itemView, context.getString(R.string.note_archived), Snackbar.LENGTH_SHORT).show();
-        ((MainActivity) context).prepareRecyclerView();
+        reloadRecyclerView(false);
+    }
+
+    /**
+     * Reloads recyclerView in MainActivity
+     *
+     * @param hideFilter Show notification that filter is active or not
+     */
+    private void reloadRecyclerView(Boolean hideFilter) {
+        if (context instanceof MainActivity) {
+            if (hideFilter) ((MainActivity) context).showFilterNotification(false);
+            ((MainActivity) context).prepareRecyclerView("allExceptArchived");
+        }
     }
 
     @Override

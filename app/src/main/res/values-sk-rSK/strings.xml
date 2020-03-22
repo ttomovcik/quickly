@@ -14,10 +14,6 @@
     <string name="hint_note_text">Text</string>
     <string name="btn_save">Uložiť</string>
     <string name="btn_delete">Odstrániť</string>
-    <string name="note_archived">Presunuté do archivovaných poznámok</string>
-    <string name="restored">Poznámka bola obnovená</string>
-    <string name="added_to_favorites">Pridané do obľúbených</string>
-    <string name="removed_from_favorites">Odstránené z obľúbených</string>
     <string name="edit_note">Upraviť pznámku</string>
     <string name="filter_active_favorites">Zobrazujú sa iba obľúbené poznámky. Ťuknutím sem zobrazíte všetky.</string>
     <string name="filter_active_archived">Zobrazujú sa archivované poznámky. Ťuknutím sem zobraziíte všetky</string>

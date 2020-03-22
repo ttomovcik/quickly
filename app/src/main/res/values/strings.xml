@@ -18,11 +18,8 @@
     <string name="btn_save">Save</string>
     <string name="btn_delete">Delete</string>
 
-    <string name="note_archived">Moved to archived notes</string>
-    <string name="restored">Note has been restored</string>
-    <string name="added_to_favorites">Added to favorites</string>
-    <string name="removed_from_favorites">Removed from favorrites</string>
     <string name="edit_note">Edit note</string>
     <string name="filter_active_favorites">Showing only favorites. Tap here to show all notes.</string>
     <string name="filter_active_archived">Showing archived notes. Tap here to show all notes.</string>
+    <string name="no_note_created">There\'s nothing to show.\nGet started by creating new note.</string>
 </resources>
