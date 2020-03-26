@@ -9,8 +9,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 4
-        versionName "0.1.3 (Dreaming Doggo)" // <3
-
+        versionName "0.2.0 (Entitled Elephant)"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -65,10 +64,8 @@ dependencies {
     // Third-party libraries
     //noinspection AnnotationProcessorOnCompilePath
     implementation 'com.jakewharton:butterknife:10.2.1'
-    implementation 'com.mikhaellopez:circularimageview:3.2.0'
-    implementation 'saschpe.android:customtabs:2.0.0'
-    implementation "com.mikepenz:aboutlibraries:7.1.0"
-    implementation "com.mikepenz:aboutlibraries-core:7.1.0"
+    implementation 'com.pixplicity.easyprefs:library:1.9.0'
+    implementation 'com.github.AppIntro:AppIntro:5.1.0'
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 

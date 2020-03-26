@@ -4,10 +4,19 @@
     <color name="colorPrimaryDark">#344E5C</color>
     <color name="colorAccent">#C471ED</color>
 
-    <color name="colorIcons">#000</color>
-    <color name="colorFabInNoteItem">#FEFEFE</color>
-    <color name="colorFilterNotification">#EFEFEF</color>
-
     <color name="colorTextPrimary">#212121</color>
     <color name="colorTextSecondary">#696969</color> <!-- nice -->
+    <color name="colorMainActivity">#FBFBFB</color>
+
+    <!--
+    Canadian Palette by Dmitri Litvinov from.. Well, Canada!
+    https://flatuicolors.com/palette/ca
+    -->
+    <color name="colorNote_lotusPink">#f368e0</color>
+    <color name="colorNote_reallyOrange">#ff9f43</color>
+    <color name="colorNote_amour">#ee5253</color>
+    <color name="colorNote_cyanite">#0abde3</color>
+    <color name="colorNote_mountainMeadow">#10ac84</color>
+    <color name="colorNote_bluebell">#341f97</color>
+    <color name="colorNote_imperialPrimer">#222f3e</color>
 </resources>

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class NotesDb extends SQLiteOpenHelper {
 
@@ -27,7 +26,9 @@ public class NotesDb extends SQLiteOpenHelper {
                 "(id INTEGER PRIMARY KEY," +
                 " title TEXT," +
                 " text TEXT," +
-                " state TEXT)");
+                " color TEXT," +
+                " state TEXT, " +
+                "lastEdited TEXT)");
     }
 
     @Override
@@ -38,12 +39,14 @@ public class NotesDb extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addNote(String title, String text, String state) {
+    public void addNote(String title, String text, String color, String state, String lastEdited) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
         contentValues.put("text", text);
+        contentValues.put("color", color);
         contentValues.put("state", state);
+        contentValues.put("lastEdited", lastEdited);
         db.insert(DB_TABLE, null, contentValues);
         db.close();
     }
@@ -61,7 +64,7 @@ public class NotesDb extends SQLiteOpenHelper {
         db.update(DB_TABLE, contentValues, "id = ?", new String[]{id});
     }
 
-    public Cursor getNotes(String type) {
+    public Cursor getNotes(String type, String color) {
         SQLiteDatabase db = this.getReadableDatabase();
         switch (type) {
             case "all":
@@ -72,6 +75,10 @@ public class NotesDb extends SQLiteOpenHelper {
                 return db.rawQuery("select * from " + DB_TABLE + " where state = 'favorite'", null);
             case "archived":
                 return db.rawQuery("select * from " + DB_TABLE + " where state = 'archived'", null);
+            case "withColor":
+                return db.rawQuery("select * from " + DB_TABLE + " where color = '*'", null);
+            case "withColorSpecific":
+                return db.rawQuery("select * from " + DB_TABLE + " where color = color", null);
         }
         return null;
     }

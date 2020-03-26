@@ -1,12 +1,15 @@
 package sk.ttomovcik.quickly.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -15,34 +18,32 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import sk.ttomovcik.quickly.MainActivity;
 import sk.ttomovcik.quickly.R;
-import sk.ttomovcik.quickly.db.NotesDb;
+import sk.ttomovcik.quickly.activities.AddNote;
 import sk.ttomovcik.quickly.model.Note;
+
+import static sk.ttomovcik.quickly.R.layout.layout_item_note;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
     private List<Note> noteList;
-    private NotesDb notesDb;
     private Context context;
-    private View itemView;
 
     static class NotesViewHolder extends RecyclerView.ViewHolder {
         TextView title, text;
-        FloatingActionButton fab_favorite;
-        CardView cv_notesItem_cardView;
-        String favorite;
+        FloatingActionButton colorTag;
+        RelativeLayout notesItem;
 
         NotesViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.tv_notesItem_title);
             text = view.findViewById(R.id.tv_notesItem_text);
-            fab_favorite = view.findViewById(R.id.fab_notesItem_favorite);
-            cv_notesItem_cardView = view.findViewById(R.id.cv_notesItem_cardView);
+            colorTag = view.findViewById(R.id.chip_notesItem_color);
+            notesItem = view.findViewById(R.id.notesItem_item);
         }
     }
 
-    public NotesAdapter(List<Note> noteList, Context context) {
+    public NotesAdapter(Context context, List<Note> noteList) {
         this.noteList = noteList;
         this.context = context;
     }
@@ -50,65 +51,30 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     @NotNull
     @Override
     public NotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_notescard, parent, false);
-        notesDb = new NotesDb(parent.getContext());
-        return new NotesViewHolder(itemView);
+        return new NotesViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout_item_note, parent, false));
     }
 
     @Override
     public void onBindViewHolder(NotesViewHolder holder, int position) {
-        Note note = noteList.get(position);
+        Note model = noteList.get(position);
 
-        // Set onClickListener for existing note -> open modal sheet in editing mode
-        holder.cv_notesItem_cardView.setOnClickListener(view -> ((MainActivity) context)
-                .openNoteInEditMode(String.valueOf(note.get_Id()), note.getTitle(), note.getText()));
-
-        holder.title.setText(note.getTitle());
-        holder.text.setText(note.getText());
-
-        // Change FAB icon according to note state
-        if (note.getState().equals("favorite")) {
-            holder.fab_favorite.setImageResource(R.drawable.ic_favorite_24dp);
-        } else {
-            holder.fab_favorite.setImageResource(R.drawable.ic_favorite_border_24dp);
+        holder.title.setText(model.getTitle());
+        holder.text.setText(model.getText());
+        if (!model.getColor().contains("C471ED")) {
+            holder.colorTag.setVisibility(View.VISIBLE);
+            holder.colorTag.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(model.getColor())));
         }
-        if (note.getState().equals("archived")) {
-            holder.fab_favorite.setImageResource(R.drawable.ic_restore_24dp);
-        }
-
-        // Set onClickListener for FAB
-        holder.fab_favorite.setOnClickListener(v -> {
-            if (note.getState().contains("normal")) {
-                notesDb.updateItem(String.valueOf(note.get_Id()), "state", "favorite");
-                reloadRecyclerView(false);
-            }
-            if (note.getState().contains("favorite")) {
-                notesDb.updateItem(String.valueOf(note.get_Id()), "state", "normal");
-                reloadRecyclerView(true);
-            }
-            if (note.getState().contains("archived")) {
-                notesDb.updateItem(String.valueOf(note.get_Id()), "state", "normal");
-                reloadRecyclerView(true);
-            }
+        holder.notesItem.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AddNote.class);
+            intent.putExtra("_id", model.get_Id());
+            intent.putExtra("_title", model.getTitle());
+            intent.putExtra("_text", model.getText());
+            intent.putExtra("_color", model.getColor());
+            intent.putExtra("_state", model.getState());
+            context.startActivity(intent);
         });
     }
 
-    public void archiveNote(int position) {
-        notesDb.updateItem(String.valueOf(Math.floor(position + 1)), "state", "archived");
-        reloadRecyclerView(false);
-    }
-
-    /**
-     * Reloads recyclerView in MainActivity
-     *
-     * @param hideFilter Show notification that filter is active or not
-     */
-    private void reloadRecyclerView(Boolean hideFilter) {
-        if (context instanceof MainActivity) {
-            if (hideFilter) ((MainActivity) context).showFilterNotification(false);
-            ((MainActivity) context).prepareRecyclerView("allExceptArchived");
-        }
-    }
 
     @Override
     public int getItemCount() {

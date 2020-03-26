@@ -12,53 +12,5 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:id="@+id/rl_bottomsheet_profileInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            tools:ignore="UselessParent">
-
-            <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/iv_bottomSheet_profileImage"
-                android:layout_width="@dimen/dp_48"
-                android:layout_height="@dimen/dp_48"
-                android:layout_margin="@dimen/dp_16"
-                android:src="@drawable/ic_person_outline_24dp" />
-
-            <TextView
-                android:id="@+id/tv_bottomsheet_welcomeMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/iv_bottomSheet_profileImage"
-                android:layout_marginEnd="8dp"
-                android:layout_toEndOf="@id/iv_bottomSheet_profileImage"
-                android:text="Hi there! You are not logged in"
-                android:textColor="@color/colorTextPrimary"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_bottomsheet_welcomeMessage"
-                android:layout_alignStart="@id/tv_bottomsheet_welcomeMessage"
-                android:text="Tap here to sign in or create account"
-                android:textColor="@color/colorTextSecondary" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_below="@id/iv_bottomSheet_profileImage" />
-        </RelativeLayout>
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/menu_bottomsheet_main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rl_bottomsheet_profileInfo"
-            app:menu="@menu/menu_modalsheet" />
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>
