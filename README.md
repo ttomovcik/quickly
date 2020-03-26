@@ -3,6 +3,7 @@
 -->
 
 <!-- PROJECT LOGO -->
+![Android CI](https://github.com/ttomovcik/quickly/workflows/Android%20CI/badge.svg)
 <br />
 <p align="center">
   <a href="https://github.com/ttomovcik/quickly/">
