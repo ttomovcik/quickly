@@ -18,7 +18,8 @@ android {
     }
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "quickly_${variant.versionName}.apk"
+            // TODO: Update Github actions once merged with master/
+            outputFileName = "quickly_app.apk"
         }
     }
     viewBinding {
