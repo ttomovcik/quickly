@@ -2,9 +2,13 @@ name: Android CI
 
 on:
   push:
-    branches: [ master, develop ]
+    branches:
+      - master
+      - develop
   pull_request:
-    branches: [ master, develop ]
+    branches:
+      - master
+      - develop
 
 jobs:
   build:
@@ -22,7 +26,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:
-        # Artifact name
-          name: quickly_debug.apk
-        # Directory containing files to upload
-          path: /build/outputs/apk/*.apk
+          name: .apk
+          path: app/build/outputs/app/debug
