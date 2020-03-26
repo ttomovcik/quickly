@@ -23,8 +23,3 @@ jobs:
         java-version: 1.8
     - name: Build with Gradle
       run: chmod +x gradlew && ./gradlew build
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-          name: .apk
-          path: app/build/outputs/app/debug
