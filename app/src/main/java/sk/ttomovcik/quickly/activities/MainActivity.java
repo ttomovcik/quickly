@@ -1,13 +1,16 @@
 package sk.ttomovcik.quickly.activities;
 
+import android.annotation.SuppressLint;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,7 @@ import butterknife.OnClick;
 import sk.ttomovcik.quickly.R;
 import sk.ttomovcik.quickly.adapters.NotesAdapter;
 import sk.ttomovcik.quickly.db.NotesDb;
+import sk.ttomovcik.quickly.helpers.TextHelpers;
 import sk.ttomovcik.quickly.model.Note;
 import sk.ttomovcik.quickly.views.BottomModalSheetNavigation;
 
@@ -58,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
     private NotesAdapter notesAdapter;
     private NotesDb notesDb;
 
-    @Override
+    @SuppressLint("ResourceType") @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("WTF", "THIS SHIT WORKS");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -76,11 +81,12 @@ public class MainActivity extends AppCompatActivity {
             notesDb.addNote(
                     "Welcome to Quickly",
                     "Do whatever the fuck you want, if you break this, cry",
-                    "#FFCE23",
+                    getResources().getString(R.color.colorNote_amour),
                     "normal",
-                    "idk fam");
+                    new TextHelpers().getCurrentTimestamp());
             Prefs.putBoolean("firstTimeRun", false);
         }
+        Log.d("currentDateTime", new TextHelpers().getCurrentTimestamp());
     }
 
     @Override
