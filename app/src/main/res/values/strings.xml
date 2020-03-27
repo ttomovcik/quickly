@@ -2,13 +2,14 @@
     <string name="app_name" translatable="false">Quickly</string>
 
     <string name="title_my_notes">My notes</string>
+    <string name="title_add_note">Add note</string>
+    <string name="title_edit_nore">Edit note</string>
     <string name="title_filter_items">Filter items</string>
+
     <string name="archive">Archive</string>
     <string name="delete">Delete</string>
     <string name="color">Color</string>
-    <string name="no_note_created">There\'s nothing to show.\nGet started by creating new note.</string>
 
-    <string-array name="notebooks">
-        <item>Default</item>
-    </string-array>
+    <string name="no_note_created">There\'s nothing to show.\nGet started by creating new note.</string>
+    <string name="last_edited">Last edited</string>
 </resources>

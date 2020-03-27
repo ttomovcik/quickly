@@ -15,22 +15,35 @@
             android:layout_height="match_parent"
             android:padding="@dimen/dp_16">
 
-            <TextView
-                android:id="@+id/tv_appTitle"
+            <LinearLayout
+                android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_24"
-                android:elevation="@dimen/dp_8"
-                android:text="@string/title_my_notes"
-                android:textColor="@color/colorTextPrimary"
-                android:textSize="30sp" />
+                android:layout_marginBottom="@dimen/dp_24">
+
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_arrow_back_24dp" />
+
+                <TextView
+                    android:id="@+id/tv_appTitle"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/title_add_note"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="30sp" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/et_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_appTitle"
+                android:layout_below="@id/header"
                 android:layout_marginBottom="@dimen/dp_8"
                 android:hint="Title"
                 android:padding="@dimen/dp_8" />

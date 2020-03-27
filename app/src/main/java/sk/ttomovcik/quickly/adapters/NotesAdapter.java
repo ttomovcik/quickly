@@ -20,6 +20,7 @@ import java.util.List;
 
 import sk.ttomovcik.quickly.R;
 import sk.ttomovcik.quickly.activities.AddNote;
+import sk.ttomovcik.quickly.helpers.TextHelpers;
 import sk.ttomovcik.quickly.model.Note;
 
 import static sk.ttomovcik.quickly.R.layout.layout_item_note;
@@ -60,17 +61,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         holder.title.setText(model.getTitle());
         holder.text.setText(model.getText());
-        if (!model.getColor().contains("C471ED")) {
+        if (!new TextHelpers().isEmpty(model.getColor())) {
             holder.colorTag.setVisibility(View.VISIBLE);
             holder.colorTag.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(model.getColor())));
         }
         holder.notesItem.setOnClickListener(v -> {
             Intent intent = new Intent(context, AddNote.class);
-            intent.putExtra("_id", model.get_Id());
+            intent.putExtra("_noteId", String.valueOf(model.get_Id()));
             intent.putExtra("_title", model.getTitle());
             intent.putExtra("_text", model.getText());
             intent.putExtra("_color", model.getColor());
             intent.putExtra("_state", model.getState());
+            intent.putExtra("_lastEdited", model.getLastEdited());
             context.startActivity(intent);
         });
     }
