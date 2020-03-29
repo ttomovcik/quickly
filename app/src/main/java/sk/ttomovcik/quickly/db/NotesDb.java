@@ -7,17 +7,26 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import sk.ttomovcik.quickly.R;
+import sk.ttomovcik.quickly.helpers.TextHelpers;
+
+import static sk.ttomovcik.quickly.R.color.colorNote_amour;
+import static sk.ttomovcik.quickly.R.string.welcomeNote_text;
+import static sk.ttomovcik.quickly.R.string.welcomeNote_title;
+
 public class NotesDb extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "notes.db";
     private static final String DB_TABLE = "notes";
     private static final int DB_VERSION = 1;
+    private Context context;
 
     /**
      * @param context Context
      */
     public NotesDb(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -49,6 +58,16 @@ public class NotesDb extends SQLiteOpenHelper {
         contentValues.put("lastEdited", lastEdited);
         db.insert(DB_TABLE, null, contentValues);
         db.close();
+    }
+
+    @SuppressLint("ResourceType")
+    public void createWelcomeNote() {
+        addNote(
+                context.getResources().getString(welcomeNote_title),
+                context.getResources().getString(welcomeNote_text),
+                context.getResources().getString(colorNote_amour),
+                "normal",
+                new TextHelpers().getCurrentTimestamp());
     }
 
     public void deleteNote(String id) {

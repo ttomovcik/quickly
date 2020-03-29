@@ -25,6 +25,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="This is a title"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="24sp" />
@@ -36,6 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/dp_8"
                 android:layout_marginEnd="@dimen/dp_8"
+                android:layout_weight="0"
                 android:clickable="false"
                 android:elevation="0dp"
                 android:focusable="false"

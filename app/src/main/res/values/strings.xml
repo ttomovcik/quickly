@@ -5,11 +5,23 @@
     <string name="title_add_note">Add note</string>
     <string name="title_edit_nore">Edit note</string>
     <string name="title_filter_items">Filter items</string>
+    <string name="title_choose_color">Choose color</string>
 
     <string name="archive">Archive</string>
     <string name="delete">Delete</string>
     <string name="color">Color</string>
+    <string name="share">Share</string>
 
     <string name="no_note_created">There\'s nothing to show.\nGet started by creating new note.</string>
     <string name="last_edited">Last edited</string>
+
+    <string name="colorNote_lotusPink">Lotus pink</string>
+    <string name="colorNote_reallyOrange">Really orange</string>
+    <string name="colorNote_amour">Amour (kinda red)</string>
+    <string name="colorNote_cyanite">Cyanite (blue)</string>
+    <string name="colorNote_mountainMeadow">Green</string>
+    <string name="colorNote_removeColor">Remove color</string>
+
+    <string name="welcomeNote_title">Welcome to Quickly!</string>
+    <string name="welcomeNote_text">Get started by tapping the add note button (bottom right corner by default).</string>
 </resources>
