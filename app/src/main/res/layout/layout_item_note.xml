@@ -38,6 +38,7 @@
                 android:layout_height="12dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/dp_8"
+                android:importantForAccessibility="no"
                 android:layout_marginEnd="@dimen/dp_8"
                 android:contentDescription="@string/contentDesc_noteColor"
                 android:layout_weight="0"

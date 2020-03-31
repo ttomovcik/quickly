@@ -15,6 +15,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,31 +50,39 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.filterNotification) LinearLayout filterNotification;
 
     @OnClick(R.id.btn_createNote) void createNote() {
-        startActivity(new Intent(this, AddNote.class));
+        intentAddNote = new Intent(this, AddNote.class);
+        intentAddNote.putExtra("_action", "0");
+        startActivity(intentAddNote);
     }
 
     private final static String TAG = "MainActivity";
     private List<Note> noteArrayList = new ArrayList<>();
     private Boolean isNoteViewPrepared = false;
     private NotesAdapter notesAdapter;
+    private String rDataAction, rDataType;
     private NotesDb notesDb;
+    private Intent intentReceivedData, intentAddNote;
 
     @SuppressLint("ResourceType") @Override
     protected void onCreate(Bundle savedInstanceState) {
+        intentReceivedData = getIntent();
+        rDataAction = intentReceivedData.getAction();
+        rDataType = intentReceivedData.getType();
+
         super.onCreate(savedInstanceState);
         setContentView(activity_main);
         ButterKnife.bind(this);
+        new Prefs.Builder().setContext(this).setMode(ContextWrapper.MODE_PRIVATE).setPrefsName(getPackageName()).setUseDefaultSharedPreference(true).build();
         notesDb = new NotesDb(this);
         notesAdapter = new NotesAdapter(this, noteArrayList);
-        new Prefs.Builder().setContext(this)
-                .setMode(ContextWrapper.MODE_PRIVATE).setPrefsName(getPackageName())
-                .setUseDefaultSharedPreference(true).build();
-
+        prepareAppWithStoredSettings();
         setSupportActionBar(bottomAppBar);
-        bottomAppBar.setNavigationOnClickListener(v -> BottomModalSheetNavigation.newInstance()
-                .show(this.getSupportFragmentManager(), "ah_sheet"));
+        bottomAppBar.setNavigationOnClickListener(v -> BottomModalSheetNavigation.newInstance().show(this.getSupportFragmentManager(), "ah_sheet"));
+    }
 
-        if (Prefs.getBoolean("firstTimeRun", true)) notesDb.createWelcomeNote();
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -86,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         new Handler().postDelayed(() -> loadRecyclerView("allExceptArchived", ""), 100);
+        showFilterNotification(false);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        notesDb.close();
     }
 
     @Override
@@ -106,6 +115,39 @@ public class MainActivity extends AppCompatActivity {
             BottomModalSheetFilter.newInstance().show(this.getSupportFragmentManager(), "ah_sheet");
         }
         return false;
+    }
+
+    void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            Intent i = new Intent(this, AddNote.class);
+            i.putExtra("_action", "1");
+            i.putExtra("_text", sharedText);
+            startActivity(i);
+        }
+    }
+
+    private void prepareAppWithStoredSettings() {
+        switch (Integer.parseInt(Prefs.getString("appTheme", "0"))) {
+            case 0: // Default (auto)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+            case 1: // Light
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case 2: // Dark
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+        }
+
+        if (Prefs.getBoolean("firstTimeRun", true)) {
+            notesDb.createWelcomeNote();
+        }
+
+        if (Prefs.getString("fabPosition", "end").contains("center")) {
+            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+        }
+
     }
 
     public void loadRecyclerView(String filter, String color) {

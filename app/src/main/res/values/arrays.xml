@@ -1,12 +1,22 @@
 <resources>
-    <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
+
+    <string-array name="addNoteBtnPosition">
+        <item>@string/center</item>
+        <item>@string/end</item>
+    </string-array>
+    <string-array name="addNoteBtnPositionValues">
+        <item>center</item>
+        <item>end</item>
     </string-array>
 
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
+    <string-array name="appTheme">
+        <item>@string/auto_default</item>
+        <item>@string/light</item>
+        <item>@string/dark</item>
+    </string-array>
+    <string-array name="appThemeValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 </resources>

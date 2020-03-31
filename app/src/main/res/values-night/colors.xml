@@ -6,7 +6,6 @@
 
     <color name="colorTextPrimary">#FFFFFF</color>
     <color name="colorTextSecondary">#757575</color>
-    <color name="colorMainActivity">#000</color>
     <color name="colorDivider">#696969</color> <!-- nice -->
     <color name="colorListItem">#1E1E1E</color>
 

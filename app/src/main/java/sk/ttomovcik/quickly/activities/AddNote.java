@@ -31,6 +31,7 @@ import sk.ttomovcik.quickly.R;
 import sk.ttomovcik.quickly.db.NotesDb;
 import sk.ttomovcik.quickly.helpers.TextHelpers;
 
+import static java.util.Objects.requireNonNull;
 import static sk.ttomovcik.quickly.R.color.colorNote_amour;
 import static sk.ttomovcik.quickly.R.color.colorNote_cyanite;
 import static sk.ttomovcik.quickly.R.color.colorNote_lotusPink;
@@ -96,15 +97,18 @@ public class AddNote extends AppCompatActivity {
                 .setMode(ContextWrapper.MODE_PRIVATE).setPrefsName(getPackageName())
                 .setUseDefaultSharedPreference(true).build();
         btn_done.setOnClickListener(v -> saveData());
-        tv_lastEdited.setText(last_edited + ": " + right_now);
+        if (Prefs.getString("fabPosition", "end").contains("center")) {
+            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+        }
+
         prepareActivityForEditingNote();
         colors = new String[]{
-                getResources().getString(colorNoteName_amour),
-                getResources().getString(colorNoteName_mountainMeadow),
-                getResources().getString(colorNoteName_cyanite),
-                getResources().getString(colorNoteName_reallyOrange),
-                getResources().getString(colorNoteName_lotusPink),
-                getResources().getString(colorNoteName_removeColor)
+                getString(colorNoteName_amour),
+                getString(colorNoteName_mountainMeadow),
+                getString(colorNoteName_cyanite),
+                getString(colorNoteName_reallyOrange),
+                getString(colorNoteName_lotusPink),
+                getString(colorNoteName_removeColor)
         };
     }
 
@@ -130,6 +134,9 @@ public class AddNote extends AppCompatActivity {
             menu.findItem(menu_addNote_share).setVisible(false);
             menu.findItem(menu_addNote_addToFavorites).setVisible(false);
         }
+        if (Prefs.getBoolean("disableShareButton", false)) {
+            menu.findItem(menu_addNote_share).setVisible(false);
+        }
         return true;
     }
 
@@ -144,13 +151,13 @@ public class AddNote extends AppCompatActivity {
                     notesDb.updateItem(_noteId, "state", "normal");
                     _state = "normal";
                     menuItem.setIcon(ic_favorite_border_24dp);
-                    Toast.makeText(this, getResources().getString(removed_from_favorites), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(removed_from_favorites), Toast.LENGTH_SHORT).show();
                 } else {
                     notesDb.updateItem(_noteId, "state", "favorite");
                     _state = "favorite";
                     menuItem.setIcon(ic_favorite_24dp);
                     menuItem.setTitle(remove_from_favorites);
-                    Toast.makeText(this, getResources().getString(added_to_favorites), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(added_to_favorites), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case menu_addNote_archive:
@@ -165,11 +172,10 @@ public class AddNote extends AppCompatActivity {
                 if (isInEditMode) {
                     share = new Intent(Intent.ACTION_SEND);
                     share.setType("text/plain");
-                    share.putExtra(Intent.EXTRA_TEXT, Prefs.getBoolean("appSignatureEnabled", false)
-                            ? _title + ": " + _text : _title + ": " + _text + "\n"
-                            + getResources().getString(app_signature) + " "
-                            + getResources().getString(app_store_link));
-                    startActivity(Intent.createChooser(share, getResources().getString(share_note)));
+                    share.putExtra(Intent.EXTRA_TEXT, Prefs.getBoolean("enableShareSignature", false)
+                            ? _title + ": " + _text + "\n" + getString(app_signature) + " " + getString(app_store_link)
+                            : _title + ": " + _text);
+                    startActivity(Intent.createChooser(share, getString(share_note)));
                 }
                 return true;
         }
@@ -178,71 +184,101 @@ public class AddNote extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        userInput = new String[]{et_title.getText().toString(), et_text.getText().toString()};
-        if (isInEditMode) {
-            if (!_title.equals(userInput[0]) || !_text.equals(userInput[1])) notifyOnExit();
-        } else if (!helper.isEmpty(userInput[0]) || !helper.isEmpty(userInput[1])) notifyOnExit();
+        if (hasTextChanged()) notifyOnExit();
+        else finish();
     }
 
 
     @SuppressLint("SetTextI18n")
     private void prepareActivityForEditingNote() {
-        if (getIntent().getExtras() != null) {
-            isInEditMode = true;
+        int actionType = Integer.parseInt(requireNonNull(getIntent().getStringExtra("_action")));
 
-            _noteId = getIntent().getStringExtra("_noteId");
-            _title = getIntent().getStringExtra("_title");
-            _text = getIntent().getStringExtra("_text");
-            _color = getIntent().getStringExtra("_color");
-            _state = getIntent().getStringExtra("_state");
-            _lastEdited = getIntent().getStringExtra("_lastEdited");
+        switch (actionType) {
+            case 0:
+                // Default action, new note
+                tv_lastEdited.setText(getString(last_edited) + " " + getString(right_now));
+                break;
+            case 1:
+                // Editing existing task
+                isInEditMode = true;
 
-            et_title.setText(_title);
-            et_text.setText(_text);
-            tv_lastEdited.setText(getString(last_edited) + " : " + _lastEdited);
+                _noteId = getIntent().getStringExtra("_noteId");
+                _title = getIntent().getStringExtra("_title");
+                _text = getIntent().getStringExtra("_text");
+                _color = getIntent().getStringExtra("_color");
+                _state = getIntent().getStringExtra("_state");
+                _lastEdited = getIntent().getStringExtra("_lastEdited");
 
-            if (!helper.isEmpty(_color)) {
-                noteColor.setVisibility(View.VISIBLE);
-                noteColor.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(_color)));
-            }
+                et_title.setText(_title);
+                et_text.setText(_text);
+                tv_lastEdited.setText(getString(last_edited) + " " + _lastEdited);
+
+
+                if (!helper.isEmpty(_color)) {
+                    noteColor.setVisibility(View.VISIBLE);
+                    noteColor.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(_color)));
+                }
+                break;
+            case 2:
+                // Received data from other activity
+                _lastEdited = (getString(last_edited) + ": " + getString(right_now));
+                tv_lastEdited.setText(getString(last_edited) + " : " + _lastEdited);
+                et_text.setText("received data");
+                break;
         }
     }
 
     @SuppressLint("ResourceType")
     private void showColorPicker() {
         new MaterialAlertDialogBuilder(this)
-                .setTitle(getResources().getString(choose_color))
+                .setTitle(getString(choose_color))
                 .setItems(colors, (dialog, which) -> {
-                    hasFavColorChanged = true;
                     switch (which) {
                         case 0: // Red
-                            _pickedColor = getResources().getString(colorNote_amour);
+                            hasFavColorChanged = true;
+                            _pickedColor = getString(colorNote_amour);
                             break;
                         case 1: // Green
-                            _pickedColor = getResources().getString(colorNote_mountainMeadow);
+                            hasFavColorChanged = true;
+                            _pickedColor = getString(colorNote_mountainMeadow);
                             break;
                         case 2: // Blue
-                            _pickedColor = getResources().getString(colorNote_cyanite);
+                            hasFavColorChanged = true;
+                            _pickedColor = getString(colorNote_cyanite);
                             break;
                         case 3: // Orange
-                            _pickedColor = getResources().getString(colorNote_reallyOrange);
+                            hasFavColorChanged = true;
+                            _pickedColor = getString(colorNote_reallyOrange);
                             break;
                         case 4: // Pink
-                            _pickedColor = getResources().getString(colorNote_lotusPink);
+                            hasFavColorChanged = true;
+                            _pickedColor = getString(colorNote_lotusPink);
                             break;
                         case 5:
+                            hasFavColorChanged = true;
                             _pickedColor = null;
+                            break;
+                        default:
+
+                            break;
                     }
                 }).create().show();
     }
 
+    private Boolean hasTextChanged() {
+        userInput = new String[]{et_title.getText().toString(), et_text.getText().toString()};
+        if (isInEditMode) {
+            return !Objects.equals(_title, userInput[0]) || !Objects.equals(_text, userInput[1]);
+        } else return !Objects.equals(_title, userInput[0]) || !Objects.equals(_text, userInput[1]);
+    }
+
     private void notifyOnExit() {
         new MaterialAlertDialogBuilder(this)
-                .setTitle(getResources().getString(unsaved_changes))
-                .setMessage(getResources().getString(exiting_on_unsaved_note))
+                .setTitle(getString(unsaved_changes))
+                .setMessage(getString(exiting_on_unsaved_note))
                 .setIcon(getDrawable(ic_delete_forever_24dp))
-                .setPositiveButton(getResources().getString(yes), (dialog, which) -> finish())
-                .setNegativeButton(getResources().getString(no), null)
+                .setPositiveButton(getString(yes), (dialog, which) -> finish())
+                .setNegativeButton(getString(no), null)
                 .create().show();
     }
 
@@ -258,7 +294,7 @@ public class AddNote extends AppCompatActivity {
             }
         } else {
             if (helper.isEmpty(userInput[0])) {
-                notesDb.add(getResources().getString(untitled_note), userInput[1], _pickedColor,
+                notesDb.add(getString(untitled_note), userInput[1], _pickedColor,
                         "normal", helper.getCurrentTimestamp());
             } else if (helper.isEmpty(userInput[1])) {
                 notesDb.add(userInput[0], "", _pickedColor, "normal", helper.getCurrentTimestamp());

@@ -64,7 +64,7 @@
                 android:layout_marginBottom="@dimen/dp_8"
                 android:hint="@string/title"
                 android:importantForAutofill="no"
-                android:inputType="text"
+                android:inputType="textMultiLine|textAutoCorrect"
                 android:padding="@dimen/dp_8" />
 
             <TextView
@@ -82,10 +82,11 @@
                 android:layout_below="@id/tv_lastEdited"
                 android:layout_marginBottom="?android:attr/actionBarSize"
                 android:background="@null"
+                android:ems="10"
                 android:gravity="top|start"
                 android:hint="@string/add_note_text"
                 android:importantForAutofill="no"
-                android:inputType="text"
+                android:inputType="textMultiLine|textAutoCorrect"
                 android:padding="@dimen/dp_8" />
         </RelativeLayout>
 

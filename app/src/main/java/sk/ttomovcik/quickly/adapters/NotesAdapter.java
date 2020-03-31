@@ -1,10 +1,10 @@
 package sk.ttomovcik.quickly.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import sk.ttomovcik.quickly.R;
 import sk.ttomovcik.quickly.activities.AddNote;
 import sk.ttomovcik.quickly.activities.MainActivity;
 import sk.ttomovcik.quickly.db.NotesDb;
@@ -72,7 +73,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         return new NotesViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout_item_note, parent, false));
     }
 
-    @Override
+    @SuppressLint("SetTextI18n") @Override
     public void onBindViewHolder(NotesViewHolder holder, int position) {
         Note noteModel = noteList.get(position);
 
@@ -90,8 +91,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         if (noteModel.getState().contains("archived")) {
             holder.divider.setVisibility(View.VISIBLE);
             holder.btn_restore.setVisibility(View.VISIBLE);
+            holder.btn_restore.setText(context.getString(R.string.restore_note) + " " + noteModel.getText());
             holder.btn_restore.setOnClickListener(v -> {
-                Log.i(TAG, "Restoring archived note");
                 notesDb.updateItem(noteModel.get_Id(), "state", "normal");
                 noteList.remove(position);
                 notifyItemRemoved(position);
@@ -106,6 +107,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         // Set onClickListener
         holder.notesItem.setOnClickListener(v -> {
             Intent intent = new Intent(context, AddNote.class);
+            intent.putExtra("_action", "1");
             intent.putExtra("_noteId", String.valueOf(noteModel.get_Id()));
             intent.putExtra("_title", noteModel.getTitle());
             intent.putExtra("_text", noteModel.getText());
