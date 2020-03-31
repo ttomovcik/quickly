@@ -3,6 +3,7 @@ package sk.ttomovcik.quickly.views;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ public class BottomModalSheetNavigation extends BottomSheetDialogFragment {
 
     @OnClick(R.id.btn_settings) void openSettings() {
         startActivity(new Intent(requireNonNull(getActivity()).getApplicationContext(), Settings.class));
-        dismiss();
+        new Thread(() -> requireNonNull(getActivity()).finish());
     }
 
     @OnClick(R.id.btn_help) void openHomepage() {
@@ -55,10 +56,12 @@ public class BottomModalSheetNavigation extends BottomSheetDialogFragment {
         Intent i = new Intent(Intent.ACTION_VIEW);
         switch (pageId) {
             case 0:
-                i.setData(Uri.parse(getResources().getString(app_source_code_link)));
+                i.setData(Uri.parse(getString(app_source_code_link)));
+                dismiss();
                 break;
             case 1:
-                i.setData(Uri.parse(getResources().getString(app_bug_tracker)));
+                i.setData(Uri.parse(getString(app_bug_tracker)));
+                dismiss();
                 break;
         }
         startActivity(i);

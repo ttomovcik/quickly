@@ -6,7 +6,6 @@
 
     <color name="colorTextPrimary">#212121</color>
     <color name="colorTextSecondary">#757575</color>
-    <color name="colorMainActivity">#FBFBFB</color>
     <color name="colorDivider">#BDBDBD</color> <!-- nice -->
     <color name="colorFilterNotification">#EFEFEF</color>
     <color name="colorListItem">#F6F6F6</color>

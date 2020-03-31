@@ -11,8 +11,8 @@ android {
         applicationId "sk.ttomovcik.quickly"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 5
-        versionName "0.2.1 (Dreaming Doggo)" // <3
+        versionCode 6
+        versionName "0.2.2 (Dreaming Doggo)" // <3
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -50,39 +50,34 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // AndroidX
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.browser:browser:1.2.0'
-    implementation 'androidx.preference:preference:1.1.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0-rc01'
-    implementation 'androidx.annotation:annotation:1.1.0'
-
-    // Google stuff
-    implementation 'com.google.android.material:material:1.2.0-alpha02' // alpha02 is most stable rn
-
-    // Firebase
-    implementation 'com.google.firebase:firebase-analytics:17.3.0'
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
-    implementation 'com.google.firebase:firebase-database:19.2.1'
-    implementation 'com.google.firebase:firebase-perf:19.0.5'
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta03'
-
-    // Third-party libraries. Hats off to those awesome devs (and all of them here)! <3
-    //noinspection AnnotationProcessorOnCompilePath
-    implementation 'com.jakewharton:butterknife:10.2.1'
-    implementation 'com.pixplicity.easyprefs:library:1.9.0'
-    implementation 'com.github.AppIntro:AppIntro:5.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.browser:browser:1.2.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.preference:preference:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0-rc01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    implementation 'com.google.android.material:material:1.2.0-alpha02' // alpha02 is most stable rn
+    implementation 'com.google.android.play:core:1.7.2'
+    implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta03'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'com.google.firebase:firebase-perf:19.0.5'
+
+    implementation 'com.github.AppIntro:AppIntro:5.1.0'
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    implementation 'com.pixplicity.easyprefs:library:1.9.0'
+    implementation 'eu.dkaratzas:android-inapp-update:1.0.5'
 
     testImplementation 'junit:junit:4.12'
-
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

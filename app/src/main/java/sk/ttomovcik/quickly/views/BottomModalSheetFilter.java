@@ -12,11 +12,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 
-import java.util.Objects;
-
 import sk.ttomovcik.quickly.activities.MainActivity;
 
-import static java.util.Objects.*;
+import static java.util.Objects.requireNonNull;
 import static sk.ttomovcik.quickly.R.color.colorNote_amour;
 import static sk.ttomovcik.quickly.R.color.colorNote_cyanite;
 import static sk.ttomovcik.quickly.R.color.colorNote_lotusPink;

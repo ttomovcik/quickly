@@ -8,6 +8,7 @@
 
         <item name="android:statusBarColor">?android:attr/colorBackground</item>
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowBackground">#000</item>
 
         <!-- Material Design attributes -->
         <item name="scrimBackground" tools:ignore="PrivateResource">@color/mtrl_scrim_color</item>
