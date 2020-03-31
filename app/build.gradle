@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.firebase-perf'
+
 
 android {
     compileSdkVersion 29
@@ -9,7 +12,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 4
-        versionName "0.2.0 (Entitled Elephant)"
+        versionName "0.2.0 (Dreaming Doggo)" // <3
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -60,14 +63,22 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
 
     // Google stuff
-    implementation 'com.google.android.material:material:1.2.0-alpha05' // alpha02 is most stable rn
+    implementation 'com.google.android.material:material:1.2.0-alpha02' // alpha02 is most stable rn
 
-    // Third-party libraries
+    // Firebase
+    implementation 'com.google.firebase:firebase-analytics:17.2.3'
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'com.google.firebase:firebase-perf:19.0.5'
+
+    // Third-party libraries. Hats off to those awesome devs (and all of them here)! <3
     //noinspection AnnotationProcessorOnCompilePath
     implementation 'com.jakewharton:butterknife:10.2.1'
     implementation 'com.pixplicity.easyprefs:library:1.9.0'
     implementation 'com.github.AppIntro:AppIntro:5.1.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 
     testImplementation 'junit:junit:4.12'

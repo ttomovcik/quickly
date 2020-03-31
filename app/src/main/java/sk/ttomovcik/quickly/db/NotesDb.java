@@ -7,7 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import sk.ttomovcik.quickly.R;
+import com.pixplicity.easyprefs.library.Prefs;
+
 import sk.ttomovcik.quickly.helpers.TextHelpers;
 
 import static sk.ttomovcik.quickly.R.color.colorNote_amour;
@@ -36,8 +37,8 @@ public class NotesDb extends SQLiteOpenHelper {
                 " title TEXT," +
                 " text TEXT," +
                 " color TEXT," +
-                " state TEXT, " +
-                "lastEdited TEXT)");
+                " state TEXT," +
+                " lastEdited TEXT)");
     }
 
     @Override
@@ -48,7 +49,7 @@ public class NotesDb extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addNote(String title, String text, String color, String state, String lastEdited) {
+    public void add(String title, String text, String color, String state, String lastEdited) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
@@ -62,12 +63,14 @@ public class NotesDb extends SQLiteOpenHelper {
 
     @SuppressLint("ResourceType")
     public void createWelcomeNote() {
-        addNote(
+        add(
                 context.getResources().getString(welcomeNote_title),
                 context.getResources().getString(welcomeNote_text),
                 context.getResources().getString(colorNote_amour),
                 "normal",
-                new TextHelpers().getCurrentTimestamp());
+                new TextHelpers().getCurrentTimestamp()
+        );
+        Prefs.putBoolean("firstTimeRun", false);
     }
 
     public void deleteNote(String id) {
@@ -75,7 +78,6 @@ public class NotesDb extends SQLiteOpenHelper {
         db.delete(DB_TABLE, "ID=?", new String[]{id});
     }
 
-    @SuppressLint("Recycle")
     public void updateItem(String id, String item, String newValue) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -83,9 +85,9 @@ public class NotesDb extends SQLiteOpenHelper {
         db.update(DB_TABLE, contentValues, "id = ?", new String[]{id});
     }
 
-    public Cursor getNotes(String type, String color) {
+    public Cursor getNotes(String filterType, String targetColor) {
         SQLiteDatabase db = this.getReadableDatabase();
-        switch (type) {
+        switch (filterType) {
             case "all":
                 return db.rawQuery("select * from " + DB_TABLE + " order by id asc", null);
             case "allExceptArchived":
@@ -95,9 +97,7 @@ public class NotesDb extends SQLiteOpenHelper {
             case "archived":
                 return db.rawQuery("select * from " + DB_TABLE + " where state = 'archived'", null);
             case "withColor":
-                return db.rawQuery("select * from " + DB_TABLE + " where color = '*'", null);
-            case "withColorSpecific":
-                return db.rawQuery("select * from " + DB_TABLE + " where color = color", null);
+                return db.rawQuery("select * from " + DB_TABLE + " where color = \"" + targetColor + "\"", null);
         }
         return null;
     }

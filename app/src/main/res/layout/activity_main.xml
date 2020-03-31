@@ -24,16 +24,48 @@
                 android:layout_marginEnd="@dimen/dp_24"
                 android:layout_marginBottom="@dimen/dp_24"
                 android:elevation="@dimen/dp_8"
-                android:text="@string/title_my_notes"
+                android:text="@string/my_notes"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="30sp" />
+
+            <LinearLayout
+                android:id="@+id/filterNotification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_appTitle"
+                android:background="@color/colorFilterNotification"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_16"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/dp_8"
+                    android:layout_weight="0"
+                    android:src="@drawable/ic_info_outline_24dp"
+                    android:tint="@color/colorAccent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/filter_active"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_noteView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_appTitle"
+                android:layout_below="@id/filterNotification"
                 android:layout_marginBottom="?attr/actionBarSize"
+                android:layoutAnimation="@anim/layout_anim_fall_down"
                 android:scrollbars="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </RelativeLayout>

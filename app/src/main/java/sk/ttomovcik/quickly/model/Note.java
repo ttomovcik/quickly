@@ -2,13 +2,12 @@ package sk.ttomovcik.quickly.model;
 
 public class Note {
 
-    private String title, text, state, color, lastEdited;
-    private int _Id;
+    private String _Id, title, text, state, color, lastEdited;
 
     public Note() {
     }
 
-    public Note(int _Id, String title,
+    public Note(String _Id, String title,
                 String text, String color,
                 String state, String lastEdited) {
         this._Id = _Id;
@@ -20,11 +19,11 @@ public class Note {
     }
 
     // ID
-    public int get_Id() {
+    public String get_Id() {
         return _Id;
     }
 
-    public void set_Id(int _Id) {
+    public void set_Id(String _Id) {
         this._Id = _Id;
     }
 

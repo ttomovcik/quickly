@@ -28,7 +28,6 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="This is a title"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="24sp" />
 
@@ -53,8 +52,30 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/layout_title_container"
             android:layout_marginTop="@dimen/dp_8"
-            android:text="and a long ass note text to test responsivity of this textview and holy fuck what do I type here"
             android:textColor="@color/colorTextSecondary" />
+
+        <LinearLayout
+            android:id="@+id/ll_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tv_notesItem_text"
+            android:layout_marginTop="@dimen/dp_8"
+            android:background="@color/colorDivider"
+            android:orientation="horizontal"
+            android:visibility="gone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_restoreNote"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_divider"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@string/restore_note"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone"
+            app:icon="@drawable/ic_settings_backup_restore_24dp"
+            app:iconTint="@color/colorAccent" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -1,0 +1,75 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/pref_category_general">
+
+        <Preference
+            app:enabled="false"
+            app:icon="@drawable/ic_refresh_24dp"
+            app:key="checkForUpdates"
+            app:title="@string/pref_title_checkForUpdates" />
+
+        <SwitchPreference
+            app:enabled="false"
+            app:key="enableShareSignature"
+            app:summary="If enabled, all notes will have app signature at the end of note"
+            app:title="@string/pref_title_addAppSignature" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_category_lookAndFeel">
+
+        <ListPreference
+            app:enabled="false"
+            app:icon="@drawable/ic_radio_button_checked_24dp"
+            app:key="fabPosition"
+            app:summary="Set a preferred 'Create note' button position"
+            app:title="@string/pref_title_addNoteFabPosition" />
+
+        <SwitchPreference
+            app:enabled="false"
+            app:icon="@drawable/ic_color_lens_24dp"
+            app:key="forceDarkTheme"
+            app:title="@string/pref_title_appTheme" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_category_advanced">
+        <Preference
+            app:enabled="false"
+            app:icon="@drawable/ic_save_24dp"
+            app:key="backupNotes"
+            app:title="@string/pref_title_backupNotes" />
+
+        <Preference
+            app:enabled="false"
+            app:icon="@drawable/ic_settings_backup_restore_24dp"
+            app:key="restoreNotes"
+            app:title="@string/pref_title_restoreNotes" />
+
+        <SwitchPreference
+            app:enabled="false"
+            app:icon="@drawable/ic_share_24dp"
+            app:key="disableShareButton"
+            app:title="@string/pref_title_disableShareBtn" />
+
+        <SwitchPreference
+            app:enabled="false"
+            app:key="showAds"
+            app:summary="Shows a banner ad in menu dialog"
+            app:title="Show ads in menu dialog" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_category_experimental">
+
+        <SwitchPreference
+            android:title="Enable experimental features"
+            app:enabled="false"
+            app:icon="@drawable/ic_bug_report_24dp"
+            app:key="enableExperimentalFeatures" />
+
+        <SwitchPreference
+            android:title="Use Firebase instead of SQLite"
+            app:enabled="false"
+            app:key="useFirebaseAsDefaultStorage" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

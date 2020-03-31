@@ -6,6 +6,6 @@
         android:id="@+id/menu_main_filter"
         android:icon="@drawable/ic_filter_list_24dp"
         app:showAsAction="ifRoom"
-        android:title="@string/title_filter_items" />
+        android:title="@string/filter_notes" />
 
 </menu>
