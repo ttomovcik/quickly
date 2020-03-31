@@ -9,6 +9,7 @@
     <color name="colorMainActivity">#FBFBFB</color>
     <color name="colorDivider">#BDBDBD</color> <!-- nice -->
     <color name="colorFilterNotification">#EFEFEF</color>
+    <color name="colorListItem">#F6F6F6</color>
 
     <!--
     Canadian Palette by Dmitri Litvinov from.. Well, Canada!
