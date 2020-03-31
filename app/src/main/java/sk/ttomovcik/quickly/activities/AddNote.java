@@ -61,6 +61,7 @@ import static sk.ttomovcik.quickly.R.string.last_edited;
 import static sk.ttomovcik.quickly.R.string.no;
 import static sk.ttomovcik.quickly.R.string.remove_from_favorites;
 import static sk.ttomovcik.quickly.R.string.removed_from_favorites;
+import static sk.ttomovcik.quickly.R.string.right_now;
 import static sk.ttomovcik.quickly.R.string.share_note;
 import static sk.ttomovcik.quickly.R.string.unsaved_changes;
 import static sk.ttomovcik.quickly.R.string.untitled_note;
@@ -83,7 +84,7 @@ public class AddNote extends AppCompatActivity {
     @BindView(R.id.et_title) EditText et_title;
     @BindView(R.id.et_text) EditText et_text;
 
-    @Override
+    @SuppressLint("SetTextI18n") @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activity_add_note);
@@ -95,6 +96,7 @@ public class AddNote extends AppCompatActivity {
                 .setMode(ContextWrapper.MODE_PRIVATE).setPrefsName(getPackageName())
                 .setUseDefaultSharedPreference(true).build();
         btn_done.setOnClickListener(v -> saveData());
+        tv_lastEdited.setText(last_edited + ": " + right_now);
         prepareActivityForEditingNote();
         colors = new String[]{
                 getResources().getString(colorNoteName_amour),
@@ -176,7 +178,6 @@ public class AddNote extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         userInput = new String[]{et_title.getText().toString(), et_text.getText().toString()};
         if (isInEditMode) {
             if (!_title.equals(userInput[0]) || !_text.equals(userInput[1])) notifyOnExit();
@@ -261,6 +262,8 @@ public class AddNote extends AppCompatActivity {
                         "normal", helper.getCurrentTimestamp());
             } else if (helper.isEmpty(userInput[1])) {
                 notesDb.add(userInput[0], "", _pickedColor, "normal", helper.getCurrentTimestamp());
+            } else {
+                notesDb.add(userInput[0], userInput[1], _pickedColor, "normal", helper.getCurrentTimestamp());
             }
         }
         if (hasFavColorChanged) notesDb.updateItem(_noteId, "color", _pickedColor);
