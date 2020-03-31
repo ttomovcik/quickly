@@ -4,78 +4,63 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.browser.customtabs.CustomTabsIntent;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.navigation.NavigationView;
-import com.mikepenz.aboutlibraries.LibsBuilder;
 
-import java.util.Objects;
-
-import saschpe.android.customtabs.CustomTabsHelper;
-import saschpe.android.customtabs.WebViewFallback;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import sk.ttomovcik.quickly.R;
-import sk.ttomovcik.quickly.Login;
+import sk.ttomovcik.quickly.activities.Settings;
 
-public class BottomModalSheetNavigation extends BottomSheetDialogFragment
-        implements NavigationView.OnNavigationItemSelectedListener {
+import static java.util.Objects.requireNonNull;
+import static sk.ttomovcik.quickly.R.layout.bottomsheet_menu;
+import static sk.ttomovcik.quickly.R.string.app_bug_tracker;
+import static sk.ttomovcik.quickly.R.string.app_source_code_link;
+
+public class BottomModalSheetNavigation extends BottomSheetDialogFragment {
+
+    @OnClick(R.id.btn_settings) void openSettings() {
+        startActivity(new Intent(requireNonNull(getActivity()).getApplicationContext(), Settings.class));
+        dismiss();
+    }
+
+    @OnClick(R.id.btn_help) void openHomepage() {
+        openWebsite(0);
+    }
+
+    @OnClick(R.id.btn_issueTracker) void openBugtracker() {
+        openWebsite(1);
+    }
 
     public static BottomModalSheetNavigation newInstance() {
         return new BottomModalSheetNavigation();
     }
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.bottomsheet_menu, container, false);
-
-        NavigationView navigationView = view.findViewById(R.id.menu_bottomsheet_main);
-        navigationView.setNavigationItemSelectedListener(this);
-        view.findViewById(R.id.rl_bottomsheet_profileInfo).setOnClickListener(v -> {
-            startActivity(new Intent(getContext(), Login.class));
-            dismiss();
-        });
+        View view = inflater.inflate(bottomsheet_menu, container, false);
+        ButterKnife.bind(this, view);
         return view;
-
     }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_settings:
-                dismiss();
-                return true;
-            case R.id.menu_helpAndSupport:
-                CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder()
-                        .addDefaultShareMenuItem()
-                        .setToolbarColor(this.getResources().getColor(R.color.colorPrimaryDark))
-                        .setShowTitle(true)
-                        .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)
-                        .build();
-                CustomTabsHelper.addKeepAliveExtra(Objects.requireNonNull(getContext()), customTabsIntent.intent);
-                CustomTabsHelper.openCustomTab(getContext(), customTabsIntent,
-                        Uri.parse(getString(R.string.app_wiki)),
-                        new WebViewFallback());
-                dismiss();
-                return true;
-            case R.id.menu_aboutApp:
-                new LibsBuilder()
-                        .withAboutIconShown(true)
-                        .withVersionShown(true)
-                        .withAboutAppName(getString(R.string.app_name))
-                        .withActivityTheme(R.style.Theme_MaterialComponents_Light_NoActionBar)
-                        .withAboutDescription(getString(R.string.app_description))
-                        .start(Objects.requireNonNull(getActivity()).getApplicationContext());
-                dismiss();
-                return true;
+    private void openWebsite(int pageId) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        switch (pageId) {
+            case 0:
+                i.setData(Uri.parse(getResources().getString(app_source_code_link)));
+                break;
+            case 1:
+                i.setData(Uri.parse(getResources().getString(app_bug_tracker)));
+                break;
         }
-        return false;
+        startActivity(i);
     }
 }

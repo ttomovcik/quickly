@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.BottomModalSheetFilter">
+
+    <TextView
+        android:id="@+id/filter_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_16"
+        android:text="@string/filter_notes"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="24sp" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_chipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/filter_title"
+        android:padding="@dimen/dp_16">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/filter_chip_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/colorNoteName_amour"
+            android:textColor="#fff"
+            app:chipBackgroundColor="@color/colorNote_amour" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/filter_chip_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/colorNoteName_mountainMeadow"
+            android:textColor="#fff"
+            app:chipBackgroundColor="@color/colorNote_mountainMeadow" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/filter_chip_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/colorNoteName_cyanite"
+            android:textColor="#fff"
+            app:chipBackgroundColor="@color/colorNote_cyanite" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/filter_chip_orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/colorNoteName_reallyOrange"
+            android:textColor="#fff"
+            app:chipBackgroundColor="@color/colorNote_reallyOrange" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/filter_chip_pink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/colorNoteName_lotusPink"
+            android:textColor="#fff"
+            app:chipBackgroundColor="@color/colorNote_lotusPink" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/filter_chipGroup"
+        android:layout_marginTop="@dimen/dp_8"
+        android:gravity="start"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/filter_btn_favorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableStart="@drawable/ic_favorite_24dp"
+            android:drawablePadding="@dimen/dp_16"
+            android:focusable="true"
+            android:padding="@dimen/dp_16"
+            android:text="@string/show_only_favorites"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:textColor="@color/colorTextPrimary" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/filter_btn_archived"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawableStart="@drawable/ic_archive_24dp"
+            android:drawablePadding="@dimen/dp_16"
+            android:focusable="true"
+            android:padding="@dimen/dp_16"
+            android:text="@string/view_archived_notes"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false"
+            android:textColor="@color/colorTextPrimary" />
+    </LinearLayout>
+
+</RelativeLayout>

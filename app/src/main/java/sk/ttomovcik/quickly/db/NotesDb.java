@@ -6,19 +6,28 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
+import com.pixplicity.easyprefs.library.Prefs;
+
+import sk.ttomovcik.quickly.helpers.TextHelpers;
+
+import static sk.ttomovcik.quickly.R.color.colorNote_amour;
+import static sk.ttomovcik.quickly.R.string.welcomeNote_text;
+import static sk.ttomovcik.quickly.R.string.welcomeNote_title;
 
 public class NotesDb extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "notes.db";
     private static final String DB_TABLE = "notes";
     private static final int DB_VERSION = 1;
+    private Context context;
 
     /**
      * @param context Context
      */
     public NotesDb(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -27,7 +36,9 @@ public class NotesDb extends SQLiteOpenHelper {
                 "(id INTEGER PRIMARY KEY," +
                 " title TEXT," +
                 " text TEXT," +
-                " state TEXT)");
+                " color TEXT," +
+                " state TEXT," +
+                " lastEdited TEXT)");
     }
 
     @Override
@@ -38,14 +49,28 @@ public class NotesDb extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addNote(String title, String text, String state) {
+    public void add(String title, String text, String color, String state, String lastEdited) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
         contentValues.put("text", text);
+        contentValues.put("color", color);
         contentValues.put("state", state);
+        contentValues.put("lastEdited", lastEdited);
         db.insert(DB_TABLE, null, contentValues);
         db.close();
+    }
+
+    @SuppressLint("ResourceType")
+    public void createWelcomeNote() {
+        add(
+                context.getResources().getString(welcomeNote_title),
+                context.getResources().getString(welcomeNote_text),
+                context.getResources().getString(colorNote_amour),
+                "normal",
+                new TextHelpers().getCurrentTimestamp()
+        );
+        Prefs.putBoolean("firstTimeRun", false);
     }
 
     public void deleteNote(String id) {
@@ -53,7 +78,6 @@ public class NotesDb extends SQLiteOpenHelper {
         db.delete(DB_TABLE, "ID=?", new String[]{id});
     }
 
-    @SuppressLint("Recycle")
     public void updateItem(String id, String item, String newValue) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -61,9 +85,9 @@ public class NotesDb extends SQLiteOpenHelper {
         db.update(DB_TABLE, contentValues, "id = ?", new String[]{id});
     }
 
-    public Cursor getNotes(String type) {
+    public Cursor getNotes(String filterType, String targetColor) {
         SQLiteDatabase db = this.getReadableDatabase();
-        switch (type) {
+        switch (filterType) {
             case "all":
                 return db.rawQuery("select * from " + DB_TABLE + " order by id asc", null);
             case "allExceptArchived":
@@ -72,6 +96,8 @@ public class NotesDb extends SQLiteOpenHelper {
                 return db.rawQuery("select * from " + DB_TABLE + " where state = 'favorite'", null);
             case "archived":
                 return db.rawQuery("select * from " + DB_TABLE + " where state = 'archived'", null);
+            case "withColor":
+                return db.rawQuery("select * from " + DB_TABLE + " where color = \"" + targetColor + "\"", null);
         }
         return null;
     }

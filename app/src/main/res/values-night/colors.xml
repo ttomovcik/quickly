@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#EF3D75</color>
+    <color name="colorPrimary">#12C2E9</color>
     <color name="colorPrimaryDark">#000</color>
-    <color name="colorAccent">#EF3D75</color>
+    <color name="colorAccent">#12C2E9</color>
 
-    <color name="colorIcons">#FFF</color>
-    <color name="colorFabInNoteItem">#212121</color>
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorTextSecondary">#757575</color>
+    <color name="colorMainActivity">#000</color>
+    <color name="colorDivider">#696969</color> <!-- nice -->
 
-    <color name="colorTextPrimary">#FFF</color>
-    <color name="colorTextSecondary">#696969</color> <!-- nice -->
+    <!--
+    Canadian Palette by Dmitri Litvinov from.. Well, Canada!
+    https://flatuicolors.com/palette/ca
+    -->
+    <color name="colorNote_lotusPink">#fff368e0</color>
+    <color name="colorNote_reallyOrange">#ffff9f43</color>
+    <color name="colorNote_amour">#ffee5253</color>
+    <color name="colorNote_cyanite">#ff0abde3</color>
+    <color name="colorNote_mountainMeadow">#ff10ac84</color>
 </resources>
