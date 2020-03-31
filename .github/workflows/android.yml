@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - master
-      - develop
   pull_request:
     branches:
       - master
-      - develop
 
 jobs:
   build:
@@ -23,3 +21,8 @@ jobs:
         java-version: 1.8
     - name: Build with Gradle
       run: chmod +x gradlew && ./gradlew build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: quickly_app.apk
+        path: /home/runner/work/quickly/quickly/app/release
