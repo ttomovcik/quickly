@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AddNote">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_16">
+
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_24"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        android:id="@+id/tv_appTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="@string/add_note"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="30sp" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/noteColor"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:layout_marginEnd="@dimen/dp_8"
+                        android:layout_weight="0"
+                        android:clickable="false"
+                        android:elevation="0dp"
+                        android:focusable="false"
+                        android:visibility="gone"
+                        app:fabSize="mini" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@id/header"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:hint="@string/title"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine|textAutoCorrect"
+                android:padding="@dimen/dp_8" />
+
+            <TextView
+                android:id="@+id/tv_lastEdited"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_title"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:text="@string/last_edited" />
+
+            <EditText
+                android:id="@+id/et_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv_lastEdited"
+                android:layout_marginBottom="?android:attr/actionBarSize"
+                android:background="@null"
+                android:ems="10"
+                android:gravity="top|start"
+                android:hint="@string/add_note_text"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine|textAutoCorrect"
+                android:padding="@dimen/dp_8" />
+        </RelativeLayout>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="?android:attr/windowBackground"
+            app:elevation="4dp"
+            app:fabAlignmentMode="end" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_done__24dp"
+            app:backgroundTint="@color/colorAccent"
+            app:layout_anchor="@id/bottomAppBar"
+            app:tint="#fff" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
